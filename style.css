@@ -4,7 +4,7 @@
 	font-family: "Courier New", Courier, monospace;
 }
 body {
-	background-color: rgb(141, 141, 219);
+	background-color: SlateBlue;
 	color: white;
 }
 
@@ -16,13 +16,21 @@ input {
 	border-radius: 10px;
 	margin-bottom: 15px;
 }
-
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	border: black 3px solid;
+}
 .row {
 	display: grid;
-	grid-template-columns: repeat(10, 1fr);
-	width: 70%;
+	grid-template-columns: 0.5fr 2fr 2fr 0.5fr 0.5fr 2fr 4fr 2fr 0.5fr 0.5fr;
 	border: 1px solid black;
 	border-right: 1px solid black;
+}
+.table-header {
+	text-align: center;
 }
 .row span {
 	padding: 8px 4px;
@@ -32,4 +40,25 @@ input {
 
 .hide {
 	display: none;
+}
+.btn {
+	border-radius: 10px;
+	background-color: #4267b2;
+}
+
+@media only screen and (max-width: 800px) {
+	body {
+		font-size: 10px;
+	}
+	h3 {
+		font-size: 10px;
+	}
+	.container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		border: black 3px solid;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	}
 }
