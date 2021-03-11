@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Appleseeds</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body onload="createTable()">
+		<div class="search">
+			<label for="search-input">search:</label>
+			<input id="search-input" type="text" />
+			<select id="dropDown">
+				<option value="">Sort by:</option>
+				<option value="firstName">First name</option>
+				<option value="lastName">Last name</option>
+				<option value="capsule">Capsule</option>
+				<option value="age">age</option>
+			</select>
+		</div>
+		<div class="table">
+			<div class="row table-header">
+				<h3 class="id">ID</h3>
+				<h3 class="first-name">First Name</h3>
+				<h3>Last Name</h3>
+				<h3>Capsule</h3>
+				<h3>age</h3>
+				<h3>Gender</h3>
+				<h3>hobby</h3>
+				<h3>city</h3>
+			</div>
+		</div>
+
+		<script src="app.js"></script>
+	</body>
+</html>
