@@ -16,7 +16,11 @@ async function fetchData() {
 
 //listenrs
 document.querySelector("#search-input").addEventListener("input", search);
-async function display() {}
+
+//display data
+async function display() {
+	createTable();
+}
 
 async function createTable() {
 	dataUsers = await fetchData();
@@ -25,31 +29,33 @@ async function createTable() {
 	dataUsers.forEach((el, index) => {
 		const rowEl = document.createElement("div");
 		rowEl.classList.add("row", `row${index}`);
-		const rowContent = `<span>${el.id}</span> <span>${el.firstName}</span><span>${el.lastName}</span><span>${el.capsule}</span><span>${el.age}</span><span>${el.gender}</span><span>${el.hobby}</span><span>${el.city}</span>`;
+		const rowContent = `<span>${el.id}</span> <span>${el.firstName}</span><span>${el.lastName}</span><span>${el.capsule}</span><span>${el.age}</span><span>${el.gender}</span><span>${el.hobby}</span><span>${el.city}</span> <button class="btn btn-del">Delete</button> <button class="btn btn-update">Update</button>`;
 		rowEl.innerHTML = rowContent;
 		tableEl.appendChild(rowEl);
+		document
+			.querySelectorAll(".btn-del")
+			.forEach((btn) => btn.addEventListener("click", deleteRow));
 	});
 }
-function search(e) {
+function search() {
 	const search = document.querySelector("#search-input");
 	const category = document.querySelector("#dropDown");
-	console.log(category.value);
-	console.log(search.value);
 	sortBy(category.value, search.value);
 }
 
 function sortBy(category, value) {
-	if (category === "")
-		// means we didnt select category
-		category = "firstName"; // we set search by firstName default
-	console.log(dataUsers[0][category]);
-	console.log(typeof dataUsers[0][category]);
 	dataUsers.forEach((user, index) => {
-		console.log(user[category]);
-		if (!user[category].toString().startsWith(value)) {
+		if (!document.querySelector(`.row${index}`)) return;
+		if (!user[category].toString().toLowerCase().startsWith(value)) {
 			document.querySelector(`.row${index}`).classList.add("hide");
 		} else {
 			document.querySelector(`.row${index}`).classList.remove("hide");
 		}
 	});
 }
+
+function deleteRow(e) {
+	console.log(e.target.parentElement);
+	e.target.parentElement.remove();
+}
+function update(e) {}
