@@ -15,6 +15,17 @@ async function fetchData() {
 	);
 	return dataUsers;
 }
+async function fetchWeather(city) {
+	const response = await fetch(
+		`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=c8a09e51ee0cad61f2cb23953bea93d0&units=metric`
+	);
+	if (response.status === 200) {
+		const data = await response.json();
+		return `${data.main.temp} Celcius`;
+	} else {
+		return "Not found";
+	}
+}
 
 //global
 let usersEl = [];
@@ -22,6 +33,7 @@ let usersEl = [];
 //listenrs
 document.querySelector("#search-input").addEventListener("input", search);
 document.querySelector("#reset").addEventListener("click", reset);
+
 //display data
 
 async function display() {
@@ -39,11 +51,14 @@ async function createTable(dataLocalArr) {
 		rowEl.classList.add("row", `row${index}`);
 		rowEl.setAttribute("data-rowid", el.id); // check it from index to new
 		rowEl.setAttribute("data-row", index); // check it from index to new
-		let rowContent = `<span >${el.id}</span> <span class="editable">${el.firstName}</span><span class="editable" >${el.lastName}</span><span class="editable">${el.capsule}</span><span class="editable">${el.age}</span><span class="editable">${el.gender}</span><span class="editable">${el.hobby}</span><span class="editable">${el.city}</span> <button class="btn btn-del" data-id="${el.id}">Delete</button> <button class="btn btn-update">Update</button>`;
+		let rowContent = `<span >${el.id}</span> <span class="editable">${el.firstName}</span><span class="editable" >${el.lastName}</span><span class="editable">${el.capsule}</span><span class="editable">${el.age}</span><span class="editable">${el.gender}</span><span class="editable">${el.hobby}</span><span class="editable" data-city="${el.city} ">${el.city}</span> <button class="btn btn-del" data-id="${el.id}">Delete</button> <button class="btn btn-update">Update</button>`;
 		rowEl.innerHTML = rowContent;
 		usersEl.push(rowEl);
 		tableEl.appendChild(usersEl[index]);
 	});
+	document
+		.querySelectorAll("[data-city]")
+		.forEach((el) => el.addEventListener("mouseover", weatherFunc));
 }
 
 function getLocalStorage() {
@@ -89,7 +104,6 @@ function deleteRow(e) {
 	e.target.parentElement.remove();
 }
 function edit(e) {
-	// sort();
 	const rowClass = e.target.parentElement.classList[1];
 	editToggle(rowClass, true);
 	const btns = document.querySelectorAll(`.${rowClass} button`);
@@ -106,21 +120,6 @@ function editToggle(row, bool) {
 		.forEach((el) => el.setAttribute("contenteditable", bool));
 }
 
-// const usersEl = [];
-// let dataUsers = [];
-// function sort(criteria) {
-// const tableEl = document.querySelector(".table");
-// dataUsers.sort((a, b) => {
-// 	return a.age > b.age ? 1 : -1;
-// });
-// console.log(dataUsers);
-// createTable(dataUsers);
-// console.log(dataUsers);
-// usersEl.forEach((el, index) => {
-// 	tableEl.appendChild(el);
-// });
-// }
-
 function update(e) {
 	const dataUsers = getLocalStorage();
 	const rowEl = e.target.parentElement;
@@ -129,7 +128,7 @@ function update(e) {
 	editToggle(rowClass, false);
 	if (e.target.innerText === "cancel") {
 		const el = dataUsers[rowIndex];
-		const rowContent = `<span >${el.id}</span> <span class="editable">${el.firstName}</span><span class="editable" >${el.lastName}</span><span class="editable">${el.capsule}</span><span class="editable">${el.age}</span><span class="editable">${el.gender}</span><span class="editable">${el.hobby}</span><span class="editable">${el.city}</span> <button class="btn btn-del" data-id="${el.id}">Delete</button> <button class="btn btn-update">Update</button>`;
+		const rowContent = `<span >${el.id}</span> <span class="editable">${el.firstName}</span><span class="editable" >${el.lastName}</span><span class="editable">${el.capsule}</span><span class="editable">${el.age}</span><span class="editable">${el.gender}</span><span class="editable">${el.hobby}</span><span class="editable" data-city="${el.city}">${el.city}</span> <button class="btn btn-del" data-id="${el.id}">Delete</button> <button class="btn btn-update">Update</button>`;
 		rowEl.innerHTML = rowContent;
 		usersEl[rowIndex] = rowEl;
 	}
@@ -146,7 +145,19 @@ function update(e) {
 		localStorage.setItem("dataUsers", JSON.stringify(dataUsers));
 		e.stopPropagation();
 		e.target.classList.add("btn-update");
-		console.log(document.querySelector("cancel"));
+		const cancelBtn = document.querySelector(".cancel");
+		console.log(cancelBtn);
+		cancelBtn.textContent = "Delete";
+		cancelBtn.classList.remove("cancel");
+		cancelBtn.classList.add("btn-del");
 		e.target.textContent = "Update";
 	}
+}
+
+async function weatherFunc(e) {
+	const city = e.target.innerText;
+	const temp = await fetchWeather(city);
+	let title = this.title;
+	this.title = temp;
+	this.setAttribute("tooltip", title);
 }

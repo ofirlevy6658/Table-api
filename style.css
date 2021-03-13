@@ -31,6 +31,9 @@ input {
 .table-header {
 	text-align: center;
 }
+.table {
+	margin-top: 13px;
+}
 .row span {
 	padding: 8px 4px;
 	border: 1px solid black;
