@@ -16,14 +16,23 @@ async function fetchData() {
 	return dataUsers;
 }
 async function fetchWeather(city) {
+	const notFoundCity = [
+		"Taybe",
+		"Tirat Ha Carmel",
+		"Mitzpe Netufa",
+		"Kiryat Yam",
+		"Zichron Yakov",
+		"Aablin",
+		"Umm El Fahem",
+		"Nof Ha Galil",
+	];
+	if (notFoundCity.includes(city)) return "Not found";
 	const response = await fetch(
 		`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=c8a09e51ee0cad61f2cb23953bea93d0&units=metric`
 	);
 	if (response.status === 200) {
 		const data = await response.json();
 		return `${data.main.temp} Celcius`;
-	} else {
-		return "Not found";
 	}
 }
 
