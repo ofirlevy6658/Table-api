@@ -95,7 +95,7 @@ function filter(category, value) {
 	const dataUsers = getLocalStorage();
 	dataUsers.forEach((user) => {
 		if (!document.querySelector(`[data-rowid="${user.id}"]`)) return;
-		if (!user[category].toString().toLowerCase().includes(value)) {
+		if (!user[category].toString().toLowerCase().startsWith(value)) {
 			document.querySelector(`[data-rowid="${user.id}"]`).classList.add("hide");
 		} else {
 			document
